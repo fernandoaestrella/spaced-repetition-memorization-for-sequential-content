@@ -103,8 +103,8 @@ def convert_input_to_ease(value):
 # Instructions
 print("\033c")
 print(divider + "\n\nThis is a tool to help you memorize long sequential content like text more efficiently using the spaced repetition technique.\n\n1. You will first input the long text you want to memorize in a file called 'input.txt' placed in the same folder as this program. It will be split wherever there is a period.\n\n2. You will then be presented with each section of the text, and you will try to remember what is the next section of text after that one.\n\n3. You will then evaluate how easy it was to recall the next section by pressing one of these keys:\n\nn -> very hard to recall or failed to do so\nm\n,\n.\n/ -> very easy to recall\n\nThe more to the left is the key that you press, you would be indicating that it was hardest to recall the next section of text, and the more to the right you press a key, you would be indicating it was easiest.\n\n4. You can then keep reviewing a few more sections, or you could then press a key to go back to the section of text that was most difficult to recall so far\n\nThis tool is just a support and a guidance. You could have achieved the same result applying this technique while reviewing the material by being aware of which section of text was hardest to recall, and going back to it periodically, with a longer period the easier it was")
-print("\nPress any key except Enter when you've placed a file called 'input.txt' with the contents of text you want to review in the same folder as this program\n")
-sys.stdin.read(1)
+print("\nPress any key when you've placed a file called 'input.txt' with the contents of text you want to review in the same folder as this program\n")
+msvcrt.getch()
 
 # Input mode
 input_text = ""
@@ -170,15 +170,18 @@ except FileNotFoundError:
             current_node = head
     except FileNotFoundError:
         # The file does not exist.
-        print("The file 'input.txt' does not exist. Please create one and run this program again\n")
+        print("The file 'input.txt' does not exist. Please create one and run this program again\nCurrent working directory: " + os.getcwd())
+        input()
         quit()
     except Exception as e:
         # An unexpected error occurred.
         print(e)
+        input()
         quit()
 except Exception as e:
     # An unexpected error occurred.
     print(e)
+    input()
     quit()
 
 # Review mode

@@ -2,7 +2,8 @@
 A tool to help you memorize long sequential content like text more efficiently using the spaced repetition technique
 
 ## Note:
-Only works as expected in Windows
+- Only works as expected in Windows
+- The executable is in the build.zip file
 
 ## Instructions:
 1. Place the long text you want to review on a file called 'input.txt' in the same folder as this program

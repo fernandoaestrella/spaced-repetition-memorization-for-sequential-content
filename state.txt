@@ -1,0 +1,1 @@
+[{"index": 0, "data": "Start", "ease": 2.5, "prev": 2, "next": 1}, {"index": 1, "data": "", "ease": 2.5, "prev": 0, "next": 2}, {"index": 2, "data": "End", "ease": 2.6, "prev": 1, "next": 0}]
