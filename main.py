@@ -37,7 +37,7 @@ def as_node(input_node):
     return None
 
 def is_valid_key(user_key):
-    if user_key in ["n", "m", ",", ".", "/", "z", "q", "w", "e", "r", "t", "y", "a", "s", "d", "f", "g", "y", "u", "i", "o", "p", "h", "j", "k", "l"]:
+    if user_key in ["n", "m", ",", ".", "/", "z", "c", "q", "w", "e", "r", "t", "y", "a", "s", "d", "f", "g", "y", "u", "i", "o", "p", "h", "j", "k", "l"]:
         return True
     else:
         return False
@@ -47,7 +47,7 @@ def keep_asking_until_right_key():
     trying = True
 
     while trying:
-        print("\nAfter you have tried to recall the next section of text, please input one of these keys to evaluate how easy it was to recall the current section of text\n\nFrom hardest to easiest,\nn\nm\n,\n.\n/\n\nOr press 'Z' to go back to the section of text which was hardest to recall, so far\n\nOr press any of the letter keys to the left of the 'Y' or 'H' keys to go to the previous section of text\n\nOr press any of the letter keys to the right of the 'T' or 'G' keys to go to the next section of text\n\nOnly the keys between 'N' and '/' modify the recording of the easiness of a given section")
+        print("\nAfter you have tried to recall the next section of text, please input one of these keys to evaluate how easy it was to recall the current section of text\n\nFrom hardest to easiest,\nn\nm\n,\n.\n/\n\nOr press 'Z' to go back to the section of text which was hardest to recall, so far\n\nOr press any of the letter keys to the left of the 'Y' or 'H' keys to go to the previous section of text\n\nOr press any of the letter keys to the right of the 'T' or 'G' keys to go to the next section of text\n\nOr press the 'C' key to save the state of the ease of all recalls in a state file\n")
         user_key = str(msvcrt.getch().decode('utf-8'))
         print(user_key)
         if is_valid_key(user_key):
@@ -100,10 +100,13 @@ def convert_input_to_ease(value):
         case _:
             return None
 
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 # Instructions
 print("\033c")
 print(divider + "\n\nThis is a tool to help you memorize long sequential content like text more efficiently using the spaced repetition technique.\n\n1. You will first input the long text you want to memorize in a file called 'input.txt' placed in the same folder as this program. It will be split wherever there is a period.\n\n2. You will then be presented with each section of the text, and you will try to remember what is the next section of text after that one.\n\n3. You will then evaluate how easy it was to recall the next section by pressing one of these keys:\n\nn -> very hard to recall or failed to do so\nm\n,\n.\n/ -> very easy to recall\n\nThe more to the left is the key that you press, you would be indicating that it was hardest to recall the next section of text, and the more to the right you press a key, you would be indicating it was easiest.\n\n4. You can then keep reviewing a few more sections, or you could then press a key to go back to the section of text that was most difficult to recall so far\n\nThis tool is just a support and a guidance. You could have achieved the same result applying this technique while reviewing the material by being aware of which section of text was hardest to recall, and going back to it periodically, with a longer period the easier it was")
-print("\nPress any key when you've placed a file called 'input.txt' with the contents of text you want to review in the same folder as this program\n")
+print("\nPress any key when you've placed a file called 'input.txt' with the contents of text you want to review in the same folder as this program\nThe first time you run it, you should not have a 'state.txt' file in the same folder\n")
 msvcrt.getch()
 
 # Input mode
@@ -186,8 +189,7 @@ except Exception as e:
 
 # Review mode
 while(True):
-    # Clear the terminal screen
-    print("\033c")
+    clear_screen()
 
     # Display current node and some data about it. The total number of nodes is increased by two to account for the Start and End nodes
     print("The current section of text is:\n\n" + divider + "\n" + current_node.data + "\n" + divider + "Index: " + str(current_node.index) + "/" + str(node_list.__len__() + 2) + ". Ease: " + str(current_node.ease))
@@ -201,14 +203,19 @@ while(True):
         current_node = current_node.prev
     elif selected_key in ["y", "u", "i", "o", "p", "h", "j", "k", "l"]:
         current_node = current_node.next
+    elif selected_key == "c":
+        # Save the current state of the linked list
+        with open(state_file_name, "w", encoding="utf-8") as f:
+            json.dump(node_list, f, cls=ComplexEncoder)
+        
+        clear_screen()
+
+        print("Saved state.\n\nPress any key to continue\n")
+        msvcrt.getch()
+        
     else:
         current_ease = convert_input_to_ease(selected_key)    
         # Update easiness of recall of this node
         current_node.prev.ease = current_node.ease + ( 0.1 - ( 5 - current_ease ) * ( 0.08 + ( 5 - current_ease ) * 0.02 ) )
-
-        # Save the current state of the linked list
-        with open(state_file_name, "w", encoding="utf-8") as f:
-            json.dump(node_list, f, cls=ComplexEncoder)
-
         # Update current node
         current_node = current_node.next
