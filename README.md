@@ -1,5 +1,5 @@
 # spaced_repetition_memorization_for_sequential_content
-A tool to help you memorize long sequential content like text more efficiently using the spaced repetition technique
+Console tool to improve memorizing long texts by jumping directly to troublesome sections with a single button press, inspired by the sequential repetition technique.
 
 ## Note:
 - Only works as expected in Windows
